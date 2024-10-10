@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #800080; /* Purple color */
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .checkbox-group,
+        .radio-group {
+            margin: 10px 0;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #800080; /* Purple color */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #6a006a; /* Darker purple for hover effect */
+        }
+        .profile-card {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e7f3fe;
+            border: 1px solid #b3d7ff;
+            border-radius: 8px;
+            display: none; /* Initially hidden */
+        }
+        .profile-card img {
+            max-width: 100px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Profile Generator</h1>
+        <form id="profileForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" placeholder="Enter your name" required>
+            <label for="profilePicture">Profile Picture:</label>
+            <input type="file" id="profilePicture" accept="image/*" required>
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <label for="contact">Contact No:</label>
+            <input type="tel" id="contact" placeholder="Enter your contact number" required>
+            <div class="checkbox-group">
+                <label>Skills:</label>
+                <label><input type="checkbox" value="HTML"> HTML</label>
+                <label><input type="checkbox" value="CSS"> CSS</label>
+                <label><input type="checkbox" value="JavaScript"> JavaScript</label>
+                <label><input type="checkbox" value="Python"> Python</label>
+                <label><input type="checkbox" value="Java"> Java</label>
+            </div>
+            <div class="radio-group">
+                <label>Gender:</label>
+                <label><input type="radio" name="gender" value="Male" required> Male</label>
+                <label><input type="radio" name="gender" value="Female"> Female</label>
+                <label><input type="radio" name="gender" value="Other"> Other</label>
+            </div>
+            <input type="url" id="github" placeholder="GitHub URL">
+            <input type="url" id="linkedin" placeholder="LinkedIn URL">
+            <button type="submit">Generate Profile</button>
+        </form>
+        <div id="profileCard" class="profile-card">
+            <h2 id="cardName"></h2>
+            <img id="cardPicture" src="" alt="Profile Picture">
+            <p id="cardDob"></p>
+            <p id="cardEmail"></p>
+            <p id="cardContact"></p>
+            <p id="cardSkills"></p>
+            <p id="cardGender"></p>
+            <p id="cardGithub"></p>
+            <p id="cardLinkedin"></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('profileForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const dob = document.getElementById('dob').value;
+            const email = document.getElementById('email').value;
+            const contact = document.getElementById('contact').value;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const skills = Array.from(document.querySelectorAll('.checkbox-group input:checked')).map(el => el.value).join(', ');
+            const github = document.getElementById('github').value;
+            const linkedin = document.getElementById('linkedin').value;
+
+            // Handle profile picture
+            const profilePicture = document.getElementById('profilePicture').files[0];
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                document.getElementById('cardPicture').src = reader.result;
+                document.getElementById('cardName').innerText = name;
+                document.getElementById('cardDob').innerText = `Date of Birth: ${dob}`;
+                document.getElementById('cardEmail').innerText = `Email: ${email}`;
+                document.getElementById('cardContact').innerText = `Contact No: ${contact}`;
+                document.getElementById('cardSkills').innerText = `Skills: ${skills}`;
+                document.getElementById('cardGender').innerText = `Gender: ${gender}`;
+                document.getElementById('cardGithub').innerText = `GitHub: ${github}`;
+                document.getElementById('cardLinkedin').innerText = `LinkedIn: ${linkedin}`;
+                document.getElementById('profileCard').style.display = 'block'; // Show profile card
+            };
+            if (profilePicture) {
+                reader.readAsDataURL(profilePicture);
+            }
+        });
+    </script>
+</body>
+</html>
